@@ -1,0 +1,8 @@
+venv
+.idea
+__pycache__/
+logs/
+/report/
+.pytest_cache/
+config/config.ini
+caches

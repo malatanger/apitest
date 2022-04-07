@@ -1,0 +1,179 @@
+firmwareList:
+  name: '固件列表'
+  token: "Authorization"
+  order: 1
+  file: false
+  case:
+    - info: "固件列表获取"
+      host: 'host'
+      address: '/v1/device/firmware/'
+      method: 'get'
+      cache:
+      relevance:
+      headers: {
+        "Content-Type": "application/json"
+      }
+      data:
+        param:
+        urlparam:
+      assert:
+        jsonpath:
+          - {
+            "path": "$.msg",
+            "value": "Success.",
+            "asserttype": "==",
+            "relevanceCheck":
+          }
+          - {
+            "path": "$.code",
+            "value": 0,
+            "asserttype": "==",
+            "relevanceCheck":
+          }
+        sqlassert:
+        time: 2
+    - info: "固件列表获取2"
+      host: 'host'
+      address: '/v1/device/firmware/'
+      method: 'get'
+      cache:
+      relevance:
+      headers: {
+        "Content-Type": "application/json"
+      }
+      data:
+        param:
+        urlparam:
+      assert:
+        jsonpath:
+          - {
+            "path": "$.msg",
+            "value": "Success.",
+            "asserttype": "==",
+            "relevanceCheck":
+          }
+          - {
+            "path": "$.code",
+            "value": 0,
+            "asserttype": "==",
+            "relevanceCheck":
+          }
+        sqlassert:
+        time: 2
+#firmwareAdd:
+#  name: '固件新增'
+#  token: "Authorization"
+#  order: 1
+#  file:
+#  case:
+#    - info: "固件新增"
+#      host: 'host'
+#      address: '/v1/device/firmware/'
+#      method: 'post'
+#      relevance:
+#        - cachefrom: 'response' # response : 从结果中获取 body : 从参数中获取
+#          path: '$.data.id' # body如果是 "id=2&path=haha" 会转换成字典 然后根据path使用jsonpath取值
+#          name: 'firmwareId'
+#      headers: {
+#        "Content-Type": "application/json"
+#      }
+#      data:
+#        param:
+#          {
+#            "desc": "测试",
+#            "name": "测试固件$RandomString($RandomPosInt(2,8)$)$",
+#            "size": "20",
+#            "url": "V1.0.$RandomPosInt(6,8)$.rbl",
+#            "category": "F001"
+#          }
+#        urlparam:
+#      assert:
+#        jsonpath:
+#          - {
+#            "path": "$.msg",
+#            "value": "Success.",
+#            "asserttype": "==",
+#            "relevanceCheck":
+#          }
+#          - {
+#            "path": "$.code",
+#            "value": 0,
+#            "asserttype": "==",
+#            "relevanceCheck":
+#          }
+#        sqlassert:
+#        time: 2
+firmwareDetail:
+  name: '固件详情'
+  token: "Authorization"
+  order: 2
+  file:
+  case:
+    - info: "固件详情"
+      host: 'host'
+      address: '/v1/device/firmware/$url(firmwareId)$/'
+      method: 'get'
+      cache:
+      relevance:
+        - relCaseName: firmwareList
+          relCaseNum: 1
+          value: $.data[0].id
+          name: firmwareId
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": NULL
+      }
+      data:
+        param:
+        urlparam:
+          firmwareId: "$relevance(firmwareId)$"
+      assert:
+        jsonpath:
+          - {
+            "path": "$.msg",
+            "value": "Success.",
+            "asserttype": "==",
+            "relevanceCheck":
+          }
+          - {
+            "path": "$.code",
+            "value": 0,
+            "asserttype": "==",
+            "relevanceCheck":
+          }
+        sqlassert:
+        time: 2
+#firmwareDel:
+#  name: '固件删除'
+#  token: "Authorization"
+#  order: 3
+#  file:
+#  case:
+#    - info: "固件删除"
+#      host: 'host'
+#      address: '/v1/device/firmware/$url(firmwareId)$/'
+#      method: 'delete'
+#      relevance:
+#      headers: {
+#        "Content-Type": "application/x-www-form-urlencoded"
+#      }
+#      data:
+#        param:
+#        urlparam:
+#          firmwareId: "$caches(firmwareId)$"
+#      assert:
+#        jsonpath:
+#          - {
+#            "path": "$.msg",
+#            "value": "Success.",
+#            "asserttype": "==",
+#            "relevanceCheck":
+#          }
+#          - {
+#            "path": "$.code",
+#            "value": 0,
+#            "asserttype": "==",
+#            "relevanceCheck":
+#          }
+#        sqlassert:
+#        time: 2

@@ -1,0 +1,104 @@
+login:
+  name: "登录"
+  token: false
+  order: 1
+  file: false
+  case:
+    - info: "用户名登录-成功"
+      host: 'host'
+      address: '/v1/oauth/login/'
+      method: 'post'
+      cache:
+      relevance:
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
+      }
+      data:
+        param: {
+          "username": "finsiot","password": "finsiot"
+        }
+        urlparam:
+      assert:
+        jsonpath:
+          - {
+            "path": "$.msg",
+            "value": "Success.",
+            "asserttype": "=="
+          }
+          - {
+            "path": "$.code",
+            "value": 0,
+            "asserttype": "=="
+          }
+          - {
+            "path": "$.data.id",
+            "value": 196,
+            "asserttype": "=="
+          }
+        sqlassert:
+
+          - {
+            "datas": [
+              {
+                "path": "$.data.id",
+                "name": "id"
+              },
+              {
+                "path": "$.data.username",
+                "name": "username"
+              },
+            ],
+            "sql": "select * from saas.user where username = 'finsiot'",
+            "db_name": "database"
+          }
+        time: 2
+    - info: "用户名登录-成功-中台"
+      host: 'host'
+      address: '/v1/oauth/login/'
+      method: 'post'
+      cache:
+      relevance:
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
+      }
+      data:
+        param: {
+          "username": "admin2","password": "123123"
+        }
+        urlparam:
+      assert:
+        jsonpath:
+          - {
+            "path": "$.msg",
+            "value": "Success.",
+            "asserttype": "=="
+          }
+          - {
+            "path": "$.code",
+            "value": 0,
+            "asserttype": "=="
+          }
+          - {
+            "path": "$.data.id",
+            "value": 16,
+            "asserttype": "=="
+          }
+        sqlassert:
+
+          - {
+            "datas": [
+              {
+                "path": "$.data.id",
+                "name": "id"
+              },
+              {
+                "path": "$.data.username",
+                "name": "username"
+              },
+            ],
+            "sql": "select * from saas.user where username = 'admin2'",
+            "db_name": "database"
+          }
+        time: 2
