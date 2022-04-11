@@ -9,7 +9,7 @@ from requests_toolbelt import MultipartEncoder
 from util.tools.log import Log
 from util.tools.randomData import replace_random
 from config.confManage import host_manage
-from util.tools.caches import Cache
+from util.tools.caches import Cache, valueHandle
 
 Log()
 
@@ -81,9 +81,18 @@ class apiSend(object):
                 header['Content-Type'] = multipart.content_type
                 response = requests.post(url=url, headers=header, timeout=timeout, data=multipart)
             elif files is None:
-
-                multipart = MultipartEncoder(data)
-                response = requests.post(url=url, data=multipart, headers={'Content-Type': multipart.content_type},
+                try:
+                    data_random = json.loads(data_random)
+                except:
+                    pass
+                if not isinstance(data_random,dict):
+                    data_random = valueHandle(str(data_random))
+                multipart = MultipartEncoder(
+                    fields=data_random,
+                    boundary='-----------------------------' + str(random.randint(int(1e28), int(1e29 - 1)))
+                )
+                header['Content-Type'] = multipart.content_type
+                response = requests.post(url=url, data=multipart, headers=header,
                                          timeout=timeout)
             else:
                 raise TypeError("files参数格式错误")

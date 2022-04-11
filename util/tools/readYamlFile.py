@@ -44,8 +44,8 @@ def ini_yaml(filename, path=datapath):
 
 if __name__ == '__main__':
     # print(datapath)
-    # get_yaml_data(r"F:\api2.0\config\runConfig.yml")
-    d = ini_allyaml()
+    d = ini_yaml("login_user_info.yml",r"E:\apitest")
+    # d = ini_allyaml()
     print(d)
     # # case_level = runConfig_dict[0]["address"].format(**{"home_id": "123"})
     # print(runConfig_dict)
