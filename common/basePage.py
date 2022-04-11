@@ -83,7 +83,7 @@ class apiSend(object):
             elif files is None:
                 try:
                     data_random = json.loads(data_random)
-                except:
+                except json.decoder.JSONDecodeError:
                     pass
                 if not isinstance(data_random,dict):
                     data_random = valueHandle(str(data_random))
